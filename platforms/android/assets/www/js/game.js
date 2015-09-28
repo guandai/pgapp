@@ -37,8 +37,6 @@
     movespeed = 3 * basefps / fps,
     gravity = 0.8 * basefps / fps;
 
-  
-
   //  debug:  debug is very important to progrmming
   var tr = function() {
     console.log.apply(console, arguments)
@@ -109,7 +107,6 @@
 
   }
 
-
   //  helper :  objects move left
   function moveobj(ele, prop, amt) {
     var org = ele.style[prop].match(/-?\d+/)[0]
@@ -159,7 +156,7 @@
 
   //  prepare screen , clean everything 
   function cleanscreen() {
-  	
+
     var deviceready = document.getElementById("deviceready"); // Get the <ul> element to insert a new node
     var gamearea = document.createElement('div');
     gamearea.id = "gamearea"
@@ -256,8 +253,8 @@
 
     //window.localStorage.setItem("top_score", 2)
     top_score = parseInt(window.localStorage.getItem("top_score")) || top_score
-  	document.getElementById("top_score").firstChild.innerHTML = top_prefix + top_score
-  	
+    document.getElementById("top_score").firstChild.innerHTML = top_prefix + top_score
+
   }
 
   // registe  interaction behaviour
@@ -376,10 +373,10 @@
       var x = pt[0],
         y = pt[1]
 
-      
+
       if (x > ltx && x < rbx && y > lty && y < rby) {
-        if (ele2.name.indexOf('top') >= 0)  toptouched =1
-       	if (ele2.name.indexOf('bottom') >= 0)  bottomtouched =1
+        if (ele2.name.indexOf('top') >= 0) toptouched = 1
+        if (ele2.name.indexOf('bottom') >= 0) bottomtouched = 1
         tr("touched")
       }
     }
@@ -392,35 +389,24 @@
       var ele = elems[i];
       if (ele && ele.getpos('left') <= bgwidth / 2 && ele.getpos('left') >= bird_left_line - birdwidth) {
         var tube_right_line = ele.getpos('left') + tubewidth
-          // detect bird passing tube, bird bead betwwen a tube left and right
-        // if (ele.name.indexOf('tubetop') >= 0) {
-        //   tr(ele.getpos('left') <= bird_right_line, (tube_right_line >= bird_left_line))
-        // }
 
-        // if (ele.name.indexOf('tubebottom') >= 0) {
-        //   tr(ele.getpos('left') <= bird_right_line, (tube_right_line >= bird_left_line))
-        // }
-
-        // reset and test touched	
-        
-     
         overlay(bird, ele)
 
         // if passed 
-        if ( ele.name.indexOf('bottom')>=0 ){
+        if (ele.name.indexOf('bottom') >= 0) {
 
-        	if ( toptouched ==1 || bottomtouched ==1 ) {
-	          if (gamemode == "touchdeath") {
-	            gameend()
-	          } else {
-	          	score = 0;
-	          }
-	        }else{
-	        	score ++
-	        }
+          if (toptouched == 1 || bottomtouched == 1) {
+            if (gamemode == "touchdeath") {
+              gameend()
+            } else {
+              score = 0;
+            }
+          } else {
+            score++
+          }
 
-        	 toptouched = 0 
-        	 bottomtouched = 0 
+          toptouched = 0
+          bottomtouched = 0
         }
         document.getElementById("score_txt").firstChild.innerHTML = score_prefix + score
       }
@@ -428,15 +414,6 @@
   }
 
   function testIvt() {
-    // tr("(bgwidth - bird_right_line + tubewidth/2)", (bgwidth - bird_right_line + tubewidth / 2))
-    // tr("tubewidth/2", (tubewidth / 2))
-    // tr("bird_right_line", (bird_right_line))
-    // tr("bgwidth - bird_right_line)", (bgwidth - bird_right_line))
-    // tr("speed", (movespeed / (1000 / fps)))
-    // tr("addTubeInterval", addTubeInterval)
-    // tr("time", (bgwidth - bird_right_line + tubewidth / 2) / (movespeed / (1000 / fps)))
-    // tr("final time", addTubeInterval + (bgwidth - bird_right_line + tubewidth / 2) / (movespeed / (1000 / fps)))
-
 
     setTimeout(function() {
       //tr("setTestTouchIvt")
@@ -469,16 +446,16 @@
 
   function gameend() {
     tr("gameend")
-    //reset
+      //reset
     gameEndFlag = 1;
     bird.style.top = bgheight / 2 + "px";
     // update top score
-    tr(score ,top_score)
+    tr(score, top_score)
     tr(score > top_score)
-    if (score > top_score ) {
-    	top_score = score
-    	document.getElementById("top_score").firstChild.innerHTML = top_prefix + top_score
-    	window.localStorage.setItem("top_score", top_score );
+    if (score > top_score) {
+      top_score = score
+      document.getElementById("top_score").firstChild.innerHTML = top_prefix + top_score
+      window.localStorage.setItem("top_score", top_score);
     }
 
 
@@ -505,7 +482,6 @@
   }
 
 
-
   function waitstart() {
     document.getElementById("clickrun").addEventListener("click", function() {
       gameEndFlag = 0;
@@ -524,7 +500,6 @@
       this.style.display = "none";
     })
   }
-
 
   // animation go every frame
   function update() {
