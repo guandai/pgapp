@@ -27,6 +27,13 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+
+
+        // twindai-added
+        var script = document.createElement('script');
+        script.src = 'js/game.js';    
+        document.getElementsByTagName('body')[0].appendChild(script);
+        // twindai-added-end
     },
     // deviceready Event Handler
     //
@@ -34,15 +41,6 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
-        var cbtn = document.getElementById("change");
-        cbtn.addEventListener("click", this.changcolor);
-
-    },
-    changecolor:function(){
-        var color = '#'+Math.floor(Math.random()*16777215).toString(16);
-        document.body.style.backgroundColor = color;
-        console.log(111)
-
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -56,5 +54,3 @@ var app = {
         console.log('Received Event: ' + id);
     }
 };
-
-app.initialize();
