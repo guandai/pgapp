@@ -30,9 +30,12 @@ var app = {
 
 
         // twindai-added
-        var script = document.createElement('script');
-        script.src = 'js/game.js';    
-        document.getElementsByTagName('body')[0].appendChild(script);
+        var jsarray = ['js/helper.js','js/game.js']
+        for(var i=0; i< jsarray.length; i++){
+            var script = document.createElement('script');
+            script.src = jsarray[i];    
+            document.getElementsByTagName('body')[0].appendChild(script);    
+        }
         // twindai-added-end
     },
     // deviceready Event Handler

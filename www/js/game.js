@@ -1,5 +1,6 @@
 (function() {
-  var movetime = 5000,
+  var bdf = new Birdfly(),
+    movetime = 5000,
     playtime = 20000,
     basefps = 24,
     fps = 8, // how fast of detect update event
@@ -67,7 +68,7 @@
 
   // add all starting  picts
   function addpics() {
-    addobj("bird", {
+    bdf.addobj("bird", {
       imgfile: "avatar.png",
       zIndex: 100,
       left: bird_left_line + "px",
@@ -75,7 +76,7 @@
     });
     bird = document.getElementById("bird")
 
-    addobj("bg1", {
+    bdf.addobj("bg1", {
       imgfile: "background.png",
       left: "0px",
     });
@@ -84,28 +85,28 @@
     document.getElementById("child_bg1").style.height = bgheight + "px"
     document.getElementById("child_bg1").style.width = bgwidth + "px"
 
-    addobj("clickrun", {
+    bdf.addobj("clickrun", {
       imgfile: "clickrun.png",
       top: bgheight / 2 - 60 + "px",
       zIndex: 50,
       halign: "center"
     });
 
-    addobj("instructions", {
+    bdf.addobj("instructions", {
       imgfile: "instructions.png",
       top: bgheight / 2 + 20 + "px",
       halign: "center"
 
     });
 
-    addobj("gameover", {
+    bdf.addobj("gameover", {
       imgfile: "gameover.png",
       top: bgheight / 2 - 60 + "px",
       halign: "center",
       display: "none"
     });
 
-    addobj("exit", {
+    bdf.addobj("exit", {
       imgfile: "exit.png",
       position: "absolute",
       bottom: 20 + "px",
@@ -113,7 +114,7 @@
       display: "none"
     });
 
-    addobj("clear", {
+    bdf.addobj("clear", {
       imgfile: "clear.png",
       position: "absolute",
       bottom: 70 + "px",
@@ -121,7 +122,7 @@
       display: "none"
     });
 
-    addobj("score_txt", {
+    bdf.addobj("score_txt", {
       top: 30 + "px",
       halign: "center",
       zIndex: 80,
@@ -131,7 +132,7 @@
       display: "none"
     });
 
-    addobj("top_score", {
+    bdf.addobj("top_score", {
       top: 30 + "px",
       left: "50px",
       zIndex: 70,
@@ -193,13 +194,13 @@
       if (gameEndFlag == 1) {
         clearInterval(tubemoveItv)
       } else {
-        var random = getRandomInt(boarderdist, bgheight - boarderdist);
+        var random = bdf.getRandomInt(boarderdist, bgheight - boarderdist);
         var halfsapce = tubespace / 2
-        var curno = timestr();
+        var curno = bdf.timestr();
         var topid = "tubetop" + curno;
         var bottomid = "tubebottom" + curno;
 
-        addobj(topid, {
+        bdf.addobj(topid, {
           imgfile: "obstacle_top.png",
           left: bgwidth + "px",
           position: "absolute",
@@ -207,7 +208,7 @@
           class: "tube"
         });
 
-        addobj(bottomid, {
+        bdf.addobj(bottomid, {
           imgfile: "obstacle_bottom.png",
           left: bgwidth + "px",
           position: "absolute",
@@ -241,8 +242,8 @@
   };
 
 
-/////////////////////////////////  big loop
-   // animation go every frame
+  /////////////////////////////////  big loop
+  // animation go every frame
   function update() {
     var dropmoveItv = setInterval(function() {
       if (gameEndFlag == 1) {
@@ -272,17 +273,17 @@
       }
     }, 1000 / fps)
   }
-///////////////////////////////
+  ///////////////////////////////
 
-//////game start
+  //////game start
   function gameend() {
-    tr("gameend")
-      //reset
+    //tr("gameend")
+    //reset
     gameEndFlag = 1;
     bird.style.top = bgheight / 2 + "px";
     // update top score
-    tr(score, top_score)
-    tr(score > top_score)
+    //tr(score, top_score)
+    //tr(score > top_score)
     if (score > top_score) {
       top_score = score
       document.getElementById("top_score").firstChild.innerHTML = top_prefix + top_score
@@ -312,13 +313,10 @@
     }, 3500)
   }
 
- 
 
 
 
-
-
-/////////////////////////  animation methods
+  /////////////////////////  animation methods
 
   //  bird fly up
   function activateFly() {
@@ -365,7 +363,7 @@
       if (ele && ele.getpos('left') <= bgwidth / 2 && ele.getpos('left') >= bird_left_line - birdwidth) {
         var tube_right_line = ele.getpos('left') + tubewidth
 
-        if (overlay(bird, ele)) {
+        if (bdf.overlay(bird, ele)) {
           if (ele.name.indexOf('top') >= 0) toptouched = 1
           if (ele.name.indexOf('bottom') >= 0) bottomtouched = 1
         }
@@ -391,151 +389,5 @@
     }
   }
 
-
-
-
-
-  ///////////////////////////////////////////////////
-
-  //  debug:  debug is very important to progrmming
-  function tr() {
-    console.log.apply(console, arguments)
-  }
-
-  //  helper: I need add many images into the stage
-  //  this function help me do it automatically 
-  function addobj(name, sty) {
-    if (!sty) sty = {}
-    var gamearea = document.getElementById('gamearea')
-    var div
-    var child
-      // prepare parent/base
-    if (sty.base) {
-      div = sty.base
-    } else {
-      div = document.createElement('div');
-      div.name = name;
-      div.id = name;
-      div.style.position = "absolute";
-      if (sty.class) div.className = sty.class
-      var stycount = 0
-      for (var i in sty) {
-        var key = Object.keys(sty)[stycount];
-        stycount++
-        div.style[key] = sty[i] ? sty[i] : 0;
-      }
-      div.style.zIndex = sty.zIndex ? sty.zIndex : gamearea.childNodes.length + 1;
-      gamearea.appendChild(div);
-    }
-    // create child 
-    if (sty.imgfile) {
-      child = document.createElement('img');
-      child.src = "./img/" + sty.imgfile;
-    } else if (sty.text) {
-      child = document.createElement('span');
-      child.innerHTML = sty.text;
-    } else {
-      child = document.createElement('div');
-    }
-    child.name = name;
-    child.id = "child_" + name;
-
-    switch (sty.halign) {
-      case "left":
-        div.style.right = "initial";
-        div.style.left = 0;
-        break;
-      case "right":
-        div.style.left = "initial";
-        div.style.right = 0;
-        break;
-      case "center":
-        div.style.right = "initial";
-        div.style.width = "100%"
-        div.style.marginLeft = "auto"
-        div.style.marginRight = "auto"
-        break;
-      default:
-        break;
-    }
-    div.appendChild(child)
-  }
-
-  //  helper :  objects move left
-  function moveobj(ele, prop, amt) {
-    var org = ele.style[prop].match(/-?\d+/)[0]
-    amt += parseInt(org)
-    ele.style[prop] = amt + "px"
-  }
-
-  // helper: random 
-  function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-
-  // helper  get 4 dig time based random
-  function timestr() {
-    return Date.now().toString().substring(9)
-  }
-
-  // helper  first captical 
-  function upperFirst(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  // helper stepmove
-  HTMLDivElement.prototype.stepmove = function(prop, offset) {
-    var orgprop = this.getpos(prop)
-    this.style.position = "absolute"
-    this.style[prop] = orgprop + offset + "px"
-  }
-
-  // helper getpos
-  HTMLDivElement.prototype.getpos = function(prop) {
-    return orgprop = parseFloat(this["offset" + upperFirst(prop)])
-  }
-
-
-  // helper detect two obj touched
-  function overlay(ele1, ele2) {
-    var arr = [ele1, ele2];
-    var points = []
-
-    // loop two elems
-    for (var e = 0; e < arr.length; e++) {
-      var ele = arr[e];
-      var ele_left_top, ele_right_top, ele_left_bottom, ele_right_bottom
-      var x = ele.offsetLeft
-      var y = ele.offsetTop
-      ele_left_top = [x, y]
-      ele_right_top = [x + ele.offsetWidth, y]
-      ele_left_bottom = [x, y + ele.offsetHeight]
-      ele_right_bottom = [x + ele.offsetWidth, y + ele.offsetHeight]
-      points[e] = [ele_left_top, ele_right_top, ele_left_bottom, ele_right_bottom]
-    }
-    // points[0] is bird , points[1] is tube
-    // set tube  opposit corner
-    var birdpts = points[0]
-    var tubepts = points[1]
-
-    var tube = tubepts,
-      ltx = tube[0][0],
-      rbx = tube[3][0],
-      lty = tube[0][1],
-      rby = tube[3][1]
-
-    // test 4 pt in bird
-    for (var p in birdpts) {
-      var pt = birdpts[p]
-      var x = pt[0],
-        y = pt[1]
-
-      if (x > ltx && x < rbx && y > lty && y < rby) {
-        tr("touched")
-        return true
-      }
-    }
-    return false
-  }
 
 })()
