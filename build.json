@@ -1,0 +1,11 @@
+{
+    "ios": {
+        "debug": {
+            "provisioningProfile": "7c5684f3-514a-4956-ad0a-e3ddf5013629"
+        },
+        "release": {
+            "codeSignIdentity": "iPhone Distribution",
+            "provisioningProfile": "7c5684f3-514a-4956-ad0a-e3ddf5013629"
+        }
+    }
+}
